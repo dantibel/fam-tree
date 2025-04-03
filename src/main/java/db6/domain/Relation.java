@@ -1,9 +1,10 @@
 package db6.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,7 +14,12 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Relation {
     public enum Type {
-        CHILD, SPOUSE
+        CHILD, SPOUSE;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
     }
 
     @Id
@@ -21,14 +27,16 @@ public class Relation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "person1", nullable = false)
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private Person person1;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "person2", nullable = false)
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private Person person2;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = RelationTypeConverter.class)
     @Column(nullable = false)
     private Type type;
 

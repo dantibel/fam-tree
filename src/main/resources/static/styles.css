@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.family-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.node {
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.node:hover {
+    transform: scale(1.05);
+}
+
+.arrow {
+    width: 2px;
+    background-color: #007bff;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.arrow-up {
+    height: 50px;
+}
+
+.arrow-down {
+    height: 50px;
+}
+
+.person-card {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.person-card h2 {
+    margin: 0;
+}
+
+.person-card p {
+    margin: 5px 0;
+}
+
+.close-card {
+    cursor: pointer;
+    color: #ff0000;
+    float: right;
+}
+
+.close-card:hover {
+    text-decoration: underline;
+}
+
+#family-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.person {
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.portrait {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+.children {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

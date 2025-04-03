@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Tree</title>
+    <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Family Tree</h1>
-    </header>
-    <main>
-        <p>This is a placeholder page for the Family Tree application.</p>
-    </main>
+    <div class="container">
+        <h1>Family Tree</h1>
+        <div id="family-tree" th:utext="${familyTreeHtml}"></div>
+    </div>
+
+    <div id="person-details" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="person-name"></h2>
+            <p id="person-years"></p>
+            <p id="person-description"></p>
+        </div>
+    </div>
+
+    <script src="/scripts.js"></script>
 </body>
 </html>

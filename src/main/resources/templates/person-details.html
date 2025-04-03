@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person Details</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="person-details">
+        <h1 th:text="${person.firstName} + ' ' + ${person.middleName} + ' ' + ${person.lastName}"></h1>
+        <img th:src="${person.portraitUrl}" alt="Portrait of ${person.firstName}" class="portrait">
+        <p><strong>Born:</strong> <span th:text="${#dates.format(person.birthDate, 'yyyy-MM-dd')}"></span></p>
+        <p><strong>Died:</strong> <span th:text="${#dates.format(person.deathDate, 'yyyy-MM-dd')}"></span></p>
+        <p><strong>Gender:</strong> <span th:text="${person.gender}"></span></p>
+        <p><strong>Description:</strong> <span th:text="${person.description}"></span></p>
+        <a href="/" class="back-button">Back to Family Tree</a>
+    </div>
+</body>
+</html>
