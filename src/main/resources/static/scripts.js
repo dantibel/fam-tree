@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
         addPersonModal.style.display = "none";
     };
 });
+
 function getSpouse(personId) {
     const relationsUrl = `${apiPath}/relations`;
 
@@ -41,8 +42,11 @@ function getSpouse(personId) {
             throw error;
         });
 }
+
+// Path for REST API endpoints
 const apiPath = '/api';
 
+// Add a new relation between two persons
 function addRelation(person1, person2, relationType) {
     const relationData = {
         person1: person1,
@@ -50,6 +54,7 @@ function addRelation(person1, person2, relationType) {
         type: relationType
     };
 
+    // Make REST request to add relation
     fetch(apiPath + '/relations', {
         method: 'POST',
         headers: {
@@ -59,21 +64,20 @@ function addRelation(person1, person2, relationType) {
     })
         .then(response => {
             if (!response.ok) {
-                console.error('ERROR: return code is', response.status);
-                throw new Error('Failed to create relation');
+                console.error(`ERROR: request to ${setRootPersonUrl} returned ${response.status}`);
+                throw new Error('Cannot create relation');
             }
             return response.json();
         })
         .then(data => {
-            alert('Relation added successfully!');
-            console.log('Relation added!');
+            console.log(`Successfully added person (id: ${data.id})`);
         })
         .catch(error => {
             console.error('ERROR:', error);
-            alert('ERROR adding relation. Please try again.');
         });
 }
 
+// Add new person to the family tree
 function addPerson() {
     const form = document.getElementById('add-person-form');
     const formData = new FormData(form);
@@ -89,9 +93,7 @@ function addPerson() {
         portraitUrl: formData.get('portraitUrl')
     };
 
-    //alert('!!! Adding person:' + JSON.stringify(personData));
-    console.log('Hi');
-
+    // Make REST request to add person
     fetch(apiPath + '/persons', {
         method: 'POST',
         headers: {
@@ -101,19 +103,21 @@ function addPerson() {
     })
         .then(response => {
             if (!response.ok) {
-                console.error('ERROR: return code is', response.status);
-                throw new Error('Failed to create person');
+                console.error(`ERROR: request to ${setRootPersonUrl} returned ${response.status}`);
+                throw new Error('Cannot add person');
             }
             return response.json();
         })
         .then(data => {
-            alert('Person added successfully!');
-            console.log('Person added!');
+            console.log(`Successfully added person (id: ${data.id})`);
 
+            // Get data for new relations
             const selfRef = data._links.self.href
             const relationType = formData.get('relationType');
             const relativeId = formData.get('relative');
             const relativeRef = 'api/persons/' + relativeId;
+
+            // Add new relation for the new person
             if (relationType === 'CHILD') {
                 addRelation(relativeRef, selfRef, relationType);
             } else if (relationType === 'PARENT') {
@@ -123,10 +127,11 @@ function addPerson() {
             }
             form.reset();
 
+            // Reload the page to see newly added person
+            window.location.reload();
         })
         .catch(error => {
             console.error('ERROR:', error);
             alert('ERROR adding person. Please try again.');
         });
-
 }
