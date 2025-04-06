@@ -52,11 +52,13 @@ public class FamilyTreeController {
 
         // Generate HTML for the person's ancestors
         Parents parents = familyTreeService.getParents(person.getId());
+        html.append("<div class='family-tree-node'>");
         if (parents != null && parents.hasAny()) {
             html.append("<div class='parents'>");
             html.append(generateTreeHtml(parents.getFather().orElse(null)));
             html.append(generateTreeHtml(parents.getMother().orElse(null)));
             html.append("</div>");
+            html.append("<div class='children'>");
         }
 
         // Generate the HTML for the current person
@@ -72,6 +74,11 @@ public class FamilyTreeController {
             .append(person.getLastName())
             .append("</p>")
             .append("</div>");
+
+        if (parents != null && parents.hasAny()) {
+            html.append("</div>"); // Close childen div
+        }
+        html.append("</div>"); // Close family-tree-node div
 
         return html.toString();
     }

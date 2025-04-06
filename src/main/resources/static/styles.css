@@ -87,11 +87,88 @@ h1 {
     align-items: center;
 }
 
-.person {
-    display: inline-block;
-    text-align: center;
-    margin: 10px;
+#add-person-btn {
+    align-self: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content {
+    position: relative;
+}
+
+.modal .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
+    font-size: 20px;
+    color: #ff0000;
+}
+
+.modal .close:hover {
+    text-decoration: underline;
+}
+
+.family-tree-node {
+    display: flex;
+    flex-direction: column;
+    column-width: auto;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+    align-self: baseline;
+    height: 100%; /* Ensure the node takes up full height */
+}
+
+.parents {
+    display: flex;
+    column-width: auto;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.child {
+    display: flex;
+    justify-content: center;
+}
+
+.person {
+    align-self: end;
+    text-align: center;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.family-tree-node:only-child .family-tree-node {
+    margin: auto;
+    margin-bottom: 0px /* Push the person to the bottom */
+}
+
+.family-tree-node:only-child .person {
+    margin-top: auto; /* Push the person to the bottom */
+}
+
+.person img.portrait {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 5px;
 }
 
 .portrait {
