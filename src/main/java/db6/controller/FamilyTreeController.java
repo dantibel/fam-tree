@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -17,16 +18,25 @@ public class FamilyTreeController {
     @Autowired
     private FamilyTreeService familyTreeService;
 
+    private Long rootPersonId = 3L;
+
     @GetMapping("/")
     public String showFamilyTree(Model model) {
         // Fetch the family tree starting from the root person (e.g., the logged-in user)
-        Person rootPerson = familyTreeService.getRootPerson();
+        Person rootPerson = familyTreeService.getPerson(rootPersonId).orElse(null);
         String familyTreeHtml = generateTreeHtml(rootPerson);
 
         // Pass the generated HTML to the template
         model.addAttribute("familyTreeHtml", familyTreeHtml);
+        model.addAttribute("rootPerson", rootPerson);
         model.addAttribute("persons", familyTreeService.getAllPersons());
         return "index";
+    }
+
+    @GetMapping("/set-root-person")
+    public String setRootPerson(Model model, Principal principal, @RequestParam Long id) {
+        rootPersonId = id;
+        return "redirect:/";
     }
 
     @GetMapping("/index")

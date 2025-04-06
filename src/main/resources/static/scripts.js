@@ -132,6 +132,32 @@ function addPerson() {
         })
         .catch(error => {
             console.error('ERROR:', error);
-            alert('ERROR adding person. Please try again.');
+        });
+
+}
+
+// Set the root person for the family tree
+function setRootPerson() {
+    // Get the selected person ID from the dropdown
+    const selection = document.getElementById('root-person-select-id');
+    const selectedIndex = selection.selectedIndex;
+    const rootPersonId = selection.options[selectedIndex].value;
+
+    // Make a request to set the root person
+    const setRootPersonUrl = 'set-root-person?id=' + rootPersonId;
+    fetch(setRootPersonUrl, {
+        method: 'GET',
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error(`ERROR: request to ${setRootPersonUrl} returned ${response.status}`);
+                throw new Error('Cannot set root person');
+            }
+
+            // Reload the page to render the family tree with the new root
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
         });
 }

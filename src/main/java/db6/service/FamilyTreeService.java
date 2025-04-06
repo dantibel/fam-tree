@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,9 +22,8 @@ public class FamilyTreeService {
     @Autowired
     private RelationRepository relationRepository;
 
-    public Person getRootPerson() {
-        // Fetch the root person (e.g., the logged-in user or a specific person)
-        return personRepository.findById(3L).orElse(null); // Replace 1L with dynamic logic
+    public Optional<Person> getPerson(Long id) {
+        return personRepository.findById(id);
     }
 
     public List<Person> getAllPersons() {

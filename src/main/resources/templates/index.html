@@ -11,6 +11,16 @@
         <h1>Family Tree</h1>
         <div style="align-items: center;">
             <button id="add-person-btn" type="button">Add Family Member</button>
+            <br><br>
+            <form id="root-person-form">
+                <label for="id">Root Person:</label>
+                <select id="root-person-select-id" name="id" required onchange="setRootPerson()">
+                    <option th:each="person: ${persons}"
+                        th:value="${person.id}" th:text="${person.firstName} + ' ' + ${person.lastName}"
+                        th:selected="${person.id} == ${rootPerson.id}">
+                    </option>
+                </select>
+            </form>
         </div>
         <div id="family-tree" th:utext="${familyTreeHtml}"></div>
     </div>
