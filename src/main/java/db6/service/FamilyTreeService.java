@@ -2,10 +2,10 @@ package db6.service;
 
 import db6.domain.Parents;
 import db6.domain.Person;
-import db6.domain.PersonRepository;
 import db6.domain.Relation;
-import db6.domain.RelationRepository;
 import db6.domain.Person.Gender;
+import db6.domain.repository.PersonRepository;
+import db6.domain.repository.RelationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
