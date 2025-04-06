@@ -1,5 +1,5 @@
-DROP TYPE IF EXISTS GENDER CASCADE;
-CREATE TYPE GENDER AS ENUM('male', 'female', 'other');
+-- DROP TYPE IF EXISTS GENDER CASCADE;
+-- CREATE TYPE GENDER AS ENUM('MALE', 'FEMALE', 'OTHER');
 
 DROP TABLE IF EXISTS Person CASCADE;
 CREATE TABLE person (
@@ -7,21 +7,21 @@ CREATE TABLE person (
     first_name VARCHAR(50) NOT NULL,
     middle_name VARCHAR(50),
     last_name VARCHAR(50) NOT NULL,
-    gender GENDER NOT NULL,
+    gender CHAR(6) NOT NULL, -- TODO: use enum type
     portrait_url VARCHAR(255),
     birth_date DATE,
     death_date DATE
 );
 
-DROP TYPE IF EXISTS RELATION_TYPE CASCADE;
-CREATE TYPE RELATION_TYPE AS ENUM('child', 'spouse');
+-- DROP TYPE IF EXISTS RELATION_TYPE CASCADE;
+-- CREATE TYPE RELATION_TYPE AS ENUM('child', 'spouse');
 
 DROP TABLE IF EXISTS Relation CASCADE;
 CREATE TABLE relation (
     id SERIAL PRIMARY KEY,
     person1 INT NOT NULL,
     person2 INT NOT NULL,
-    type RELATION_TYPE NOT NULL,
+    type CHAR(6) NOT NULL, -- TODO: use enum type
     FOREIGN KEY (person1) REFERENCES person(id),
     FOREIGN KEY (person2) REFERENCES person(id)
 );

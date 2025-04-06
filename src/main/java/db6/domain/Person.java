@@ -3,18 +3,24 @@ package db6.domain;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Person {
+    // TODO: use plain enum
     public enum Gender {
-        MALE, FEMALE, OTHER;
+        MALE("MALE"), FEMALE("FEMALE"), OTHER("OTHER");
+
+        String value;
+
+        Gender(String value) {
+            this.value = value;
+        }
 
         @Override
         public String toString() {
@@ -35,7 +41,7 @@ public class Person {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Convert(converter = GenderConverter.class)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
 

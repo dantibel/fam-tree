@@ -3,8 +3,9 @@ package db6.domain;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,8 +14,15 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Relation {
+    // TODO: use plain enum
     public enum Type {
-        CHILD, SPOUSE;
+        CHILD("CHILD"), SPOUSE("SPOUSE");
+
+        String value;
+
+        Type(String value) {
+            this.value = value;
+        }
 
         @Override
         public String toString() {
@@ -36,7 +44,7 @@ public class Relation {
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private Person person2;
 
-    @Convert(converter = RelationTypeConverter.class)
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Type type;
 
