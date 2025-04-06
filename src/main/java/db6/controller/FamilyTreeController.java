@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.function.Function;
 
 @Controller
 public class FamilyTreeController {
@@ -27,6 +25,7 @@ public class FamilyTreeController {
 
         // Pass the generated HTML to the template
         model.addAttribute("familyTreeHtml", familyTreeHtml);
+        model.addAttribute("persons", familyTreeService.getAllPersons());
         return "index";
     }
 
@@ -36,7 +35,7 @@ public class FamilyTreeController {
     }
 
     private static String getPortraitUrl(Person person) {
-        return person.getPortraitUrl() != null
+        return person.getPortraitUrl() != null && !person.getPortraitUrl().isEmpty()
             ? person.getPortraitUrl()
             : person.getGender() == Gender.MALE
                 ?  "/images/portrait-male.webp"

@@ -26,6 +26,10 @@ public class FamilyTreeService {
         return personRepository.findById(3L).orElse(null); // Replace 1L with dynamic logic
     }
 
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
+    }
+
     public List<Person> getChildren(Long parentId) {
         // Get the parent
         Person parent = personRepository.findById(parentId).orElse(null);

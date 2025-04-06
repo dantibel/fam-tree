@@ -1,48 +1,132 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const personNodes = document.querySelectorAll('.person-node');
+    const addPersonBtn = document.getElementById("add-person-btn");
+    const addPersonModal = document.getElementById("add-person-modal");
 
-    personNodes.forEach(node => {
-        node.addEventListener('click', function() {
-            const personId = this.dataset.id;
-            fetchPersonDetails(personId);
-        });
+    addPersonBtn.addEventListener("click", function () {
+        addPersonModal.style.display = "block";
     });
 
-    function fetchPersonDetails(personId) {
-        fetch(`/person/${personId}`)
-            .then(response => response.json())
-            .then(data => {
-                displayPersonDetails(data);
-            })
-            .catch(error => console.error('Error fetching person details:', error));
-    }
-
-    function displayPersonDetails(person) {
-        const detailsContainer = document.getElementById('person-details');
-        detailsContainer.innerHTML = `
-            <h2>${person.firstName} ${person.middleName ? person.middleName + ' ' : ''}${person.lastName}</h2>
-            <img src="${person.portraitUrl}" alt="${person.firstName} ${person.lastName}" />
-            <p><strong>Born:</strong> ${person.birthDate ? person.birthDate : 'N/A'}</p>
-            <p><strong>Died:</strong> ${person.deathDate ? person.deathDate : 'N/A'}</p>
-            <p><strong>Gender:</strong> ${person.gender}</p>
-            <p><strong>Description:</strong> ${person.description ? person.description : 'No description available.'}</p>
-        `;
-        detailsContainer.style.display = 'block';
-    }
-
-    function showPersonDetails(personId) {
-        // Fetch person details from the backend (replace with actual API call)
-        fetch(`/person/${personId}`)
-            .then(response => response.json())
-            .then(person => {
-                document.getElementById("person-name").textContent = `${person.firstName} ${person.lastName}`;
-                document.getElementById("person-years").textContent = `${person.birthDate || "Unknown"} - ${person.deathDate || "Present"}`;
-                document.getElementById("person-description").textContent = person.description || "No description available.";
-                document.getElementById("person-details").style.display = "block";
-            });
-    }
-
-    function closeModal() {
-        document.getElementById("person-details").style.display = "none";
-    }
+    window.closeAddPersonModal = function () {
+        addPersonModal.style.display = "none";
+    };
 });
+function getSpouse(personId) {
+    const relationsUrl = `${apiPath}/relations`;
+
+    return fetch(relationsUrl)
+        .then(response => {
+            if (!response.ok) {
+                console.error('ERROR: return code is', response.status);
+                throw new Error('Failed to fetch relations');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const spouseRelation = data._embedded.relations.find(relation => 
+                (relation.person1 === `/api/persons/${personId}` || relation.person2 === `/api/persons/${personId}`) &&
+                relation.relationType === 'SPOUSE'
+            );
+
+            if (spouseRelation) {
+                return spouseRelation.person1 === `/api/persons/${personId}` 
+                    ? spouseRelation.person2.replace('/api/persons/', '') 
+                    : spouseRelation.person1.replace('/api/persons/', '');
+            } else {
+                console.log('No spouse found for the given person.');
+                return null;
+            }
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+            throw error;
+        });
+}
+const apiPath = '/api';
+
+function addRelation(person1, person2, relationType) {
+    const relationData = {
+        person1: person1,
+        person2: person2,
+        type: relationType
+    };
+
+    fetch(apiPath + '/relations', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(relationData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error('ERROR: return code is', response.status);
+                throw new Error('Failed to create relation');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Relation added successfully!');
+            console.log('Relation added!');
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+            alert('ERROR adding relation. Please try again.');
+        });
+}
+
+function addPerson() {
+    const form = document.getElementById('add-person-form');
+    const formData = new FormData(form);
+
+    const personData = {
+        firstName: formData.get('firstName'),
+        middleName: formData.get('middleName'),
+        lastName: formData.get('lastName'),
+        birthDate: formData.get('birthDate'),
+        deathDate: formData.get('deathDate'),
+        gender: formData.get('gender'),
+        description: formData.get('description'),
+        portraitUrl: formData.get('portraitUrl')
+    };
+
+    //alert('!!! Adding person:' + JSON.stringify(personData));
+    console.log('Hi');
+
+    fetch(apiPath + '/persons', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(personData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error('ERROR: return code is', response.status);
+                throw new Error('Failed to create person');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Person added successfully!');
+            console.log('Person added!');
+
+            const selfRef = data._links.self.href
+            const relationType = formData.get('relationType');
+            const relativeId = formData.get('relative');
+            const relativeRef = 'api/persons/' + relativeId;
+            if (relationType === 'CHILD') {
+                addRelation(relativeRef, selfRef, relationType);
+            } else if (relationType === 'PARENT') {
+                addRelation(selfRef, relativeRef, 'CHILD');
+            } else if (relationType === 'SPOUSE') {
+                addRelation(relativeRef, selfRef, relationType);
+            }
+            form.reset();
+
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+            alert('ERROR adding person. Please try again.');
+        });
+
+}
