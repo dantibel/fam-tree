@@ -55,7 +55,8 @@ function addRelation(person1, person2, relationType) {
     };
 
     // Make REST request to add relation
-    fetch(apiPath + '/relations', {
+    const addRelationUrl = apiPath + '/relations';
+    fetch(addRelationUrl, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -64,7 +65,7 @@ function addRelation(person1, person2, relationType) {
     })
         .then(response => {
             if (!response.ok) {
-                console.error(`ERROR: request to ${setRootPersonUrl} returned ${response.status}`);
+                console.error(`ERROR: request to ${addRelationUrl} returned ${response.status}`);
                 throw new Error('Cannot create relation');
             }
             return response.json();
