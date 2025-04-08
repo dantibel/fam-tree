@@ -94,7 +94,8 @@ function addPerson() {
     };
 
     // Make REST request to add person
-    fetch(apiPath + '/persons', {
+    const addPersonPath = apiPath + '/persons'
+    fetch(addPersonPath, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -103,7 +104,7 @@ function addPerson() {
     })
         .then(response => {
             if (!response.ok) {
-                console.error(`ERROR: request to ${setRootPersonUrl} returned ${response.status}`);
+                console.error(`ERROR: request to ${addPersonPath} returned ${response.status}`);
                 throw new Error('Cannot add person');
             }
             return response.json();
