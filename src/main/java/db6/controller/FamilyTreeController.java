@@ -20,7 +20,7 @@ public class FamilyTreeController {
 
     private Long rootPersonId = 3L;
 
-    @GetMapping("/")
+    @GetMapping("/fam-tree")
     public String showFamilyTree(Model model) {
         // Fetch the family tree starting from the root person (e.g., the logged-in user)
         Person rootPerson = familyTreeService.getPerson(rootPersonId).orElse(null);
@@ -37,11 +37,6 @@ public class FamilyTreeController {
     public String setRootPerson(Model model, Principal principal, @RequestParam Long id) {
         rootPersonId = id;
         return "redirect:/";
-    }
-
-    @GetMapping("/index")
-    public String index(Model model, Principal principal) {
-        return showFamilyTree(model);
     }
 
     private static String getPortraitUrl(Person person) {

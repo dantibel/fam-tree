@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Family Tree Sign Up</title>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    <p style="color: brown" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <form th:action="@{/signup}" method="post">
+        <section>
+            <h3>Account Information</h2>
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" id="signup-email" name="email" required />
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="signup-password" name="password" required />
+            </div>
+            <div>
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="signup-confirm-password" name="confirmPassword" required />
+            </div>
+        </section>
+        <section>
+            <h3>Personal Information</h3>
+            <div>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="signup-first-name" name="firstName" required />
+            </div>
+            <div>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="signup-last-name" name="lastName" required />
+            </div>
+            <div>
+                <label for="gender">Gender:</label>
+                <select id="signup-gender" name="gender" required>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="OTHER">Other</option>
+                </select><br>
+            </div>
+            <div>
+                <label for="dateOfBirth">Birth Date:</label>
+                <input type="date" id="signup-birth-date" name="dateOfBirth" required />
+            </div>
+            <div>
+                <button type="submit">Sign Up</button>
+            </div>
+        </section>
+    </form>
+    <p>Already have an account? <a th:href="@{/login}">Log in</a></p>
+</body>
+</html>

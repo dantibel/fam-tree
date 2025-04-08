@@ -43,6 +43,16 @@ CREATE TABLE photo_person (
     FOREIGN KEY (person) REFERENCES person(id)
 );
 
+DROP TABLE IF EXISTS app_user CASCADE;
+CREATE TABLE app_user (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    user_role VARCHAR(10) NOT NULL DEFAULT 'USER',
+    person INT NOT NULL,
+    FOREIGN KEY (person) REFERENCES person(id)
+);
+
 DROP INDEX IF EXISTS idx_person1_id CASCADE;
 CREATE INDEX idx_person1_id ON relation(person1);
 DROP INDEX IF EXISTS idx_person2_id CASCADE;

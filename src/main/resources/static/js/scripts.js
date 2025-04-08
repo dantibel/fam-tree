@@ -43,6 +43,13 @@ function getSpouse(personId) {
         });
 }
 
+// Get CSRF token for request authorization
+function getCSRF() {
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+    return { csrfToken, csrfHeader };
+}
+
 // Path for REST API endpoints
 const apiPath = '/api';
 
@@ -54,12 +61,14 @@ function addRelation(person1, person2, relationType) {
         type: relationType
     };
 
+    const csrf = getCSRF();
     // Make REST request to add relation
     const addRelationUrl = apiPath + '/relations';
     fetch(addRelationUrl, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrf.csrfHeader]: csrf.csrfToken
         },
         body: JSON.stringify(relationData)
     })
@@ -94,12 +103,14 @@ function addPerson() {
         portraitUrl: formData.get('portraitUrl')
     };
 
+    const csrf = getCSRF();
     // Make REST request to add person
     const addPersonPath = apiPath + '/persons'
     fetch(addPersonPath, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            [csrf.csrfHeader]: csrf.csrfToken
         },
         body: JSON.stringify(personData)
     })
@@ -130,6 +141,7 @@ function addPerson() {
             form.reset();
 
             // Reload the page to see newly added person
+            window.closeAddPersonModal();
             window.location.reload();
         })
         .catch(error => {
@@ -145,10 +157,15 @@ function setRootPerson() {
     const selectedIndex = selection.selectedIndex;
     const rootPersonId = selection.options[selectedIndex].value;
 
+    const csrf = getCSRF();
+
     // Make a request to set the root person
     const setRootPersonUrl = 'set-root-person?id=' + rootPersonId;
     fetch(setRootPersonUrl, {
         method: 'GET',
+        headers: {
+            [csrf.csrfHeader]: csrf.csrfToken
+        }
     })
         .then(response => {
             if (!response.ok) {

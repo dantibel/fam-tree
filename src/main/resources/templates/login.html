@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Family Tree Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <p style="color: brown" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+    <form th:action="@{/login}" method="post">
+        <div>
+            <label for="username">Email:</label>
+            <input type="text" id="login-email" name="username" />
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="login-password" name="password" />
+        </div>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+    <p>Don't have an account? <a th:href="@{/signup}">Sign up</a></p>
+</body>
+</html>
