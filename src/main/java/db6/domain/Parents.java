@@ -2,6 +2,7 @@ package db6.domain;
 
 import java.util.Optional;
 
+// Encapsulation of persons' father and mother
 public class Parents {
     private Optional<Person> father;
     private Optional<Person> mother;

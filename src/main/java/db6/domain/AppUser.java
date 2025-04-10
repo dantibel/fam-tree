@@ -2,6 +2,7 @@ package db6.domain;
 
 import jakarta.persistence.*;
 
+// User of this app
 @Entity
 @Table(name = "app_user")
 public class AppUser {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
+// Main controller responsible for displaying the family tree
 @Controller
 public class FamilyTreeController {
 
@@ -22,7 +23,8 @@ public class FamilyTreeController {
 
     @GetMapping("/fam-tree")
     public String showFamilyTree(Model model) {
-        // Fetch the family tree starting from the root person (e.g., the logged-in user)
+
+        // Fetch the family tree with the logged-in user as a root
         Person rootPerson = familyTreeService.getPerson(rootPersonId).orElse(null);
         String familyTreeHtml = generateTreeHtml(rootPerson);
 
@@ -47,7 +49,7 @@ public class FamilyTreeController {
                 : "/images/portrait-female.jpg";
     }
 
-    // Recursively generate HTML for whole family tree
+    // Recursively generate HTML for whole family tree (root person is at the bottom)
     private String generateTreeHtml(Person person) {
         if (person == null) {
             return "";

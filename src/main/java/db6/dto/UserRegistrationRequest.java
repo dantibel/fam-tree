@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import db6.domain.Person;
 
+// DTO containing user's account and personal information mentioned upon registration
 public class UserRegistrationRequest {
     private String email;
     private String password;

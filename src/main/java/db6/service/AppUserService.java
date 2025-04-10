@@ -8,6 +8,7 @@ import db6.domain.repository.AppUserRepository;
 import db6.domain.repository.PersonRepository;
 import db6.dto.UserRegistrationRequest;
 
+// Service managing user registration
 @Service
 public class AppUserService {
 
