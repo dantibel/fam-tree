@@ -53,10 +53,12 @@ public class Person {
 
     private LocalDate deathDate;
 
+    private Long userId;
+
     public Person() {
     }
 
-    public Person(String firstName, String middleName, String lastName, Gender gender, String portraitUrl, LocalDate birthDate, LocalDate deathDate) {
+    public Person(String firstName, String middleName, String lastName, Gender gender, String portraitUrl, LocalDate birthDate, LocalDate deathDate, Long userId) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -64,6 +66,7 @@ public class Person {
         this.portraitUrl = portraitUrl;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -128,5 +131,13 @@ public class Person {
 
     public void setDeathDate(LocalDate deathDate) {
         this.deathDate = deathDate;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

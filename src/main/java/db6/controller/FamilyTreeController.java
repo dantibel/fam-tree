@@ -3,6 +3,7 @@ package db6.controller;
 import db6.domain.Parents;
 import db6.domain.Person;
 import db6.domain.Person.Gender;
+import db6.service.AppUserService;
 import db6.service.FamilyTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,24 @@ public class FamilyTreeController {
     @Autowired
     private FamilyTreeService familyTreeService;
 
-    private Long rootPersonId = 3L;
+    @Autowired
+    private AppUserService appUserService;
+
+    private Long rootPersonId = null;
+    private Long loggedUserId;
 
     @GetMapping("/fam-tree")
-    public String showFamilyTree(Model model) {
+    public String showFamilyTree(Model model, Principal principal) {
+
+        // Fetch the logged-in user's root person ID
+        if (principal != null) {
+            String username = principal.getName();
+            loggedUserId = appUserService.getUserPersonId(username);
+        }
+
+        if (rootPersonId == null) {
+            rootPersonId = loggedUserId;
+        }
 
         // Fetch the family tree with the logged-in user as a root
         Person rootPerson = familyTreeService.getPerson(rootPersonId).orElse(null);
@@ -31,6 +46,7 @@ public class FamilyTreeController {
         // Pass the generated HTML to the template
         model.addAttribute("familyTreeHtml", familyTreeHtml);
         model.addAttribute("rootPerson", rootPerson);
+        model.addAttribute("loggedUserId", loggedUserId);
         model.addAttribute("persons", familyTreeService.getAllPersons());
         return "index";
     }

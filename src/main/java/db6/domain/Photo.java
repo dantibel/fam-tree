@@ -21,15 +21,18 @@ public class Photo {
 
     private LocalDate date;
 
+    private Long userId;
+
     public Photo() {
     }
 
-    public Photo(String imageUrl, String description, LocalDate date) {
+    public Photo(String imageUrl, String description, LocalDate date, Long userId) {
         this.imageUrl = imageUrl;
         this.description = description;
         this.date = date;
+        this.userId = userId;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -60,5 +63,13 @@ public class Photo {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

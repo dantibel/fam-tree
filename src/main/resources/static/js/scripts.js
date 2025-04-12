@@ -50,6 +50,12 @@ function getCSRF() {
     return { csrfToken, csrfHeader };
 }
 
+// Get the logged-in user ID
+function getLoggedUserId() {
+    const loggedUserId = parseInt(document.querySelector('meta[name="_user_id"]').getAttribute('content'));
+    return loggedUserId;
+}
+
 // Path for REST API endpoints
 const apiPath = '/api';
 
@@ -58,7 +64,8 @@ function addRelation(person1, person2, relationType) {
     const relationData = {
         person1: person1,
         person2: person2,
-        type: relationType
+        type: relationType,
+        userId: getLoggedUserId()
     };
 
     const csrf = getCSRF();
@@ -100,7 +107,8 @@ function addPerson() {
         deathDate: formData.get('deathDate'),
         gender: formData.get('gender'),
         description: formData.get('description'),
-        portraitUrl: formData.get('portraitUrl')
+        portraitUrl: formData.get('portraitUrl'),
+        userId: getLoggedUserId(),
     };
 
     const csrf = getCSRF();

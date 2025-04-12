@@ -49,15 +49,18 @@ public class Relation {
     @Column(nullable = false)
     private Type type;
 
+    private Long userId;
+
     public Relation() {
     }
 
-    public Relation(Person person1, Person person2, Type type) {
+    public Relation(Person person1, Person person2, Type type, Long userId) {
         this.person1 = person1;
         this.person2 = person2;
         this.type = type;
+        this.userId = userId;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -88,5 +91,13 @@ public class Relation {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
