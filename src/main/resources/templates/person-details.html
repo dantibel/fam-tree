@@ -6,14 +6,14 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <header>
+        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+    </header>
     <div class="person-details">
-        <h1 th:text="${person.firstName} + ' ' + ${person.middleName} + ' ' + ${person.lastName}"></h1>
-        <img th:src="${person.portraitUrl}" alt="Portrait of ${person.firstName}" class="portrait">
-        <p><strong>Born:</strong> <span th:text="${#dates.format(person.birthDate, 'yyyy-MM-dd')}"></span></p>
-        <p><strong>Died:</strong> <span th:text="${#dates.format(person.deathDate, 'yyyy-MM-dd')}"></span></p>
-        <p><strong>Gender:</strong> <span th:text="${person.gender}"></span></p>
-        <p><strong>Description:</strong> <span th:text="${person.description}"></span></p>
-        <a href="/" class="back-button">Back to Family Tree</a>
+        <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
+        <h1 th:text="${person.firstName} + ' ' + (${person.middleName}?: '') + ' ' + ${person.lastName}"></h1>
+        <i><p th:text="(${#temporals.format(person.birthDate, 'dd.MM.yyyy')}?: '?') + ' - ' + (${#temporals.format(person.deathDate, 'dd.MM.yyyy')}?: '?')"></p></i>
+        <p><span th:text="${person.gender}"></span></p>
     </div>
 </body>
 </html>

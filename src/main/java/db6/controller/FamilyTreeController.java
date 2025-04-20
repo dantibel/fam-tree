@@ -57,6 +57,12 @@ public class FamilyTreeController {
         return "redirect:/";
     }
 
+    @GetMapping("/person")
+    public String showPersonDetails(@RequestParam Long id, Model model) {
+        model.addAttribute("person", familyTreeService.getPerson(id).orElse(null));
+        return "person-details";
+    }
+
     private static String getPortraitUrl(Person person) {
         return person.getPortraitUrl() != null && !person.getPortraitUrl().isEmpty()
             ? person.getPortraitUrl()
@@ -85,17 +91,12 @@ public class FamilyTreeController {
         }
 
         // Generate the HTML for the current person
-        html.append("<div class='person' onclick='showPersonDetails(")
-            .append(person.getId())
-            .append(")'>")
-            .append("<img src='")
-            .append(getPortraitUrl(person))
-            .append("' alt='Portrait' class='portrait'>")
-            .append("<p>")
-            .append(person.getFirstName())
-            .append(" ")
-            .append(person.getLastName())
+        html.append("<div class='person'>")
+            .append("<a href=\"/person?id=" + person.getId() + "\">")
+            .append("<img src='" + getPortraitUrl(person) + "' alt='Portrait' class='portrait'>")
+            .append("<p>" + person.getFirstName() + " " + person.getLastName())
             .append("</p>")
+            .append("</a>")
             .append("</div>");
 
         if (parents != null && parents.hasAny()) {
