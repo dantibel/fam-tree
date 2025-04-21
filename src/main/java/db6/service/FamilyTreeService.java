@@ -2,7 +2,6 @@ package db6.service;
 
 import db6.domain.Parents;
 import db6.domain.Person;
-import db6.domain.Photo;
 import db6.domain.Relation;
 import db6.domain.Person.Gender;
 import db6.domain.repository.PersonRepository;
@@ -12,9 +11,7 @@ import db6.domain.repository.PhotoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -138,6 +135,7 @@ public class FamilyTreeService {
         return true;
     }
 
+    /*
     public void savePortrait(Long personId, MultipartFile file) throws IOException {
         Person person = personRepository.findById(personId)
                 .orElseThrow(() -> new IllegalArgumentException("Person not found"));
@@ -152,6 +150,7 @@ public class FamilyTreeService {
 
         personRepository.save(person);
     }
+    */
 
     public boolean updatePerson(Long id, Person updatedPerson) {
         return personRepository.findById(id).map(
