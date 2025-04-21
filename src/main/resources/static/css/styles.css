@@ -121,6 +121,13 @@ form {
     margin: 10px;
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+    justify-content: center;
+}
+
 label, select {
     margin: 5px;
     font-weight: bold;
@@ -128,14 +135,18 @@ label, select {
 
 select {
     background-color: #8b7e66;
-    padding: 3px;
+    padding: 5px;
     border-radius: 5px;
     color: black;
+    margin: 10px;
 }
+
 label {
-    clear: both;
-    margin-right:15px;
+    margin-right: 15px;
     text-align: right;
+    width: 150px;
+    display: inline-block;
+    clear: both;
 }
 
 input {
@@ -144,6 +155,7 @@ input {
     padding: 5px;
     border-radius: 5px;
     margin: 10px;
+    text-align: left;
 }
 
 select, input, button {
