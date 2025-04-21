@@ -227,7 +227,7 @@ function setRootPerson() {
 
 function showContextMenu(event, personId) {
     event.preventDefault();
-    const menu = document.getElementById('context-menu');
+    const menu = document.getElementById(personActionMenuName);
     menu.style.top = event.pageY + 'px';
     menu.style.left = event.pageX + 'px';
     menu.style.display = 'block';
@@ -235,24 +235,24 @@ function showContextMenu(event, personId) {
 }
 
 document.addEventListener('click', () => {
-    const menu = document.getElementById('context-menu');
+    const menu = document.getElementById(personActionMenuName);
     if (menu !== null) {
         menu.style.display = 'none';
     }
 });
 
 function viewPersonWithMenu() {
-    const menu = document.getElementById('context-menu');
+    const menu = document.getElementById(personActionMenuName);
     window.location.href = '/view-person?id=' + menu.dataset.personId;
 }
 
 function editPersonWithMenu() {
-    const menu = document.getElementById('context-menu');
+    const menu = document.getElementById(personActionMenuName);
     window.location.href = '/edit-person?id=' + menu.dataset.personId;
 }
 
 function deletePersonWithMenu() {
-    const menu = document.getElementById('context-menu');
+    const menu = document.getElementById(personActionMenuName);
     const personId = menu.dataset.personId;
     const csrf = getCSRF();
 

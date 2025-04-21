@@ -7,9 +7,18 @@
 </head>
 <body>
     <header>
-        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+        <div class="left-side">
+            <button onclick="window.location.href='/fam-tree';">Back to Family Tree</button>
+        </div>
+        <div class="center">
+            <h1>Person Details</h1>
+        </div>
+        <div class="right-side">
+            <span th:text="${loggedUsername}"></span>
+            <button onclick="logout()">Logout</button>
+        </div>
     </header>
-    <div class="person-details">
+    <div class="content">
         <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
         <h1 th:text="${person.firstName} + ' ' + (${person.middleName}?: '') + ' ' + ${person.lastName}"></h1>
         <i><p th:text="(${#temporals.format(person.birthDate, 'dd.MM.yyyy')}?: '?') + ' - ' + (${#temporals.format(person.deathDate, 'dd.MM.yyyy')}?: '?')"></p></i>

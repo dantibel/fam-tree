@@ -6,15 +6,24 @@
     <meta name="_user_id" th:content="${loggedUserId}">
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-    <title>Edit Family Member</title>
+    <title>Edit Person Details</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header>
-        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+        <div class="left-side">
+            <button onclick="window.location.href='/fam-tree';">Back to Family Tree</button>
+        </div>
+        <div class="center">
+            <h1>Edit Person Details</h1>
+        </div>
+        <div class="right-controls">
+            <span th:text="${loggedUsername}"></span>
+            <button onclick="logout()">Logout</button>
+        </div>
     </header>
-    <h2>Modify Personal Information</h2>
-    <div class="person-details">
+
+    <div class="content">
         <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
         <form id="editPersonForm">
             <input type="number" id="id" name="id" required hidden th:value="${person.id}"><br>

@@ -11,10 +11,19 @@
 </head>
 <body>
     <header>
-        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+        <div class="left-side">
+            <button onclick="window.location.href='/fam-tree';">Back to Family Tree</button>
+        </div>
+        <div class="center">
+            <h1>Add New Family Member</h1>
+        </div>
+        <div class="right-side">
+            <span th:text="${loggedUsername}"></span>
+            <button onclick="logout()">Logout</button>
+        </div>
     </header>
-    <div>
-        <h2>Add Person</h2>
+
+    <div class="content">
         <form id="addPersonForm">
             <label for="firstName">First Name:</label>
             <input type="text" id="firstName" name="firstName" required><br>
