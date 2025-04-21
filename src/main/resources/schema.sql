@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS app_user CASCADE;
+CREATE TABLE app_user (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    user_role VARCHAR(10) NOT NULL DEFAULT 'USER'
+);
+
 -- DROP TYPE IF EXISTS GENDER CASCADE;
 -- CREATE TYPE GENDER AS ENUM('MALE', 'FEMALE', 'OTHER');
 
@@ -15,6 +23,9 @@ CREATE TABLE person (
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES app_user(id)
 );
+
+ALTER TABLE app_user ADD COLUMN person INT;
+ALTER TABLE app_user ADD FOREIGN KEY (person) REFERENCES person(id);
 
 -- DROP TYPE IF EXISTS RELATION_TYPE CASCADE;
 -- CREATE TYPE RELATION_TYPE AS ENUM('child', 'spouse');
@@ -53,16 +64,6 @@ CREATE TABLE photo_person (
 
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES app_user(id)
-);
-
-DROP TABLE IF EXISTS app_user CASCADE;
-CREATE TABLE app_user (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    user_role VARCHAR(10) NOT NULL DEFAULT 'USER',
-    person INT,
-    FOREIGN KEY (person) REFERENCES person(id)
 );
 
 DROP INDEX IF EXISTS idx_person1_id CASCADE;
