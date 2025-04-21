@@ -143,6 +143,57 @@ function addPerson() {
 
 }
 
+// Edit an existing person in the family tree
+function editPerson() {
+    const form = document.getElementById('editPersonForm');
+    const formData = new FormData(form);
+
+    const personData = {
+        firstName: formData.get('firstName'),
+        middleName: formData.get('middleName'),
+        lastName: formData.get('lastName'),
+        birthDate: formData.get('birthDate'),
+        deathDate: formData.get('deathDate'),
+        gender: formData.get('gender'),
+        userId: getLoggedUserId(),
+    };
+
+    //const personId = new URLSearchParams(window.location.search).get('id');
+    const personId = formData.get('id');
+    const csrf = getCSRF();
+
+    // Make REST request to update person
+    const editPersonPath = `${apiPath}/persons/${personId}`;
+    fetch(editPersonPath, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            [csrf.csrfHeader]: csrf.csrfToken
+        },
+        body: JSON.stringify(personData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error(`ERROR: request to ${editPersonPath} returned ${response.status}`);
+                throw new Error('Cannot edit person');
+            }
+
+            console.log(`Successfully edited person (id: ${personId})`);
+
+            // Upload portrait if a new file is selected
+            const fileInput = document.getElementById('portrait');
+            if (fileInput.files.length > 0) {
+                uploadPortrait(personId);
+            }
+
+            // Reload the page to reflect the changes
+            window.location.href = '/fam-tree';
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+        });
+}
+
 // Set the root person for the family tree
 function setRootPerson() {
     // Get the selected person ID from the dropdown
@@ -167,6 +218,59 @@ function setRootPerson() {
             }
 
             // Reload the page to render the family tree with the new root
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+        });
+}
+
+function showContextMenu(event, personId) {
+    event.preventDefault();
+    const menu = document.getElementById('context-menu');
+    menu.style.top = event.pageY + 'px';
+    menu.style.left = event.pageX + 'px';
+    menu.style.display = 'block';
+    menu.dataset.personId = personId;
+}
+
+document.addEventListener('click', () => {
+    const menu = document.getElementById('context-menu');
+    if (menu !== null) {
+        menu.style.display = 'none';
+    }
+});
+
+function viewPersonWithMenu() {
+    const menu = document.getElementById('context-menu');
+    window.location.href = '/view-person?id=' + menu.dataset.personId;
+}
+
+function editPersonWithMenu() {
+    const menu = document.getElementById('context-menu');
+    window.location.href = '/edit-person?id=' + menu.dataset.personId;
+}
+
+function deletePersonWithMenu() {
+    const menu = document.getElementById('context-menu');
+    const personId = menu.dataset.personId;
+    const csrf = getCSRF();
+
+    // Make a request to delete the person
+    const deletePersonUrl = apiPath + '/persons/' + personId;
+    fetch(deletePersonUrl, {
+        method: 'DELETE',
+        headers: {
+            [csrf.csrfHeader]: csrf.csrfToken
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error(`ERROR: request to ${deletePersonUrl} returned ${response.status}`);
+                throw new Error('Cannot delete person');
+            }
+
+            // Reload the page to reflect the changes
             window.location.reload();
         })
         .catch(error => {

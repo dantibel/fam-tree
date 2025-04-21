@@ -64,10 +64,16 @@ public class FamilyTreeController {
         return "add-person";
     }
 
-
+    @GetMapping("/view-person")
     public String showPersonDetails(@RequestParam Long id, Model model) {
         model.addAttribute("person", familyTreeService.getPerson(id).orElse(null));
-        return "person-details";
+        return "view-person";
+    }
+
+    @GetMapping("/edit-person")
+    public String editPersonDetails(@RequestParam Long id, Model model) {
+        model.addAttribute("person", familyTreeService.getPerson(id).orElse(null));
+        return "edit-person";
     }
 
     private static String getPortraitUrl(Person person) {
@@ -97,11 +103,11 @@ public class FamilyTreeController {
             html.append("<div class='children'>");
         }
 
-        // Generate the HTML for the current person
-        html.append("<div class='person'>")
+        // Generate the HTML for the current person with context menu
+        html.append("<div class='person' oncontextmenu='showContextMenu(event, " + person.getId() + ")'>")
             .append("<a href=\"/person?id=" + person.getId() + "\">")
             .append("<img src='" + getPortraitUrl(person) + "' alt='Portrait' class='portrait'>")
-            .append("<p>" + person.getFirstName() + " " + person.getLastName())
+            .append("<p>" + person.getFirstName() + " " + (person.getMiddleName() != null ? (person.getMiddleName() + " ") : "") + person.getLastName())
             .append("</p>")
             .append("</a>")
             .append("</div>");
@@ -110,6 +116,13 @@ public class FamilyTreeController {
             html.append("</div>"); // Close childen div
         }
         html.append("</div>"); // Close family-tree-node div
+
+        // Add the context menu HTML
+        html.append("<div id='context-menu' style='display:none; position:absolute; background:white; z-index:1000;'>")
+            .append("<button onclick='viewPersonWithMenu()'>View Details</button><br>")
+            .append("<button onclick='editPersonWithMenu()'>Edit</button><br>")
+            .append("<button onclick='deletePersonWithMenu()'>Delete</button><br>")
+            .append("</div>");
 
         return html.toString();
     }

@@ -7,6 +7,11 @@ public class Parents {
     private Optional<Person> father;
     private Optional<Person> mother;
 
+    public Parents() {
+        this.father = Optional.empty();
+        this.mother = Optional.empty();
+    }
+
     public Parents(Person father, Person mother) {
         this.father = Optional.ofNullable(father);
         this.mother = Optional.ofNullable(mother);

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_user_id" th:content="${loggedUserId}">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>Edit Family Member</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+    </header>
+    <h2>Modify Personal Information</h2>
+    <div class="person-details">
+        <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
+        <form id="editPersonForm">
+            <input type="number" id="id" name="id" required hidden th:value="${person.id}"><br>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required th:value="${person.firstName}"><br>
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName" name="middleName" th:value="${person.middleName}"><br>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required th:value="${person.lastName}"><br>
+            <label for="birthDate">Birth Date:</label>
+            <input type="date" id="birthDate" name="birthDate" th:value="${person.birthDate}"><br>
+            <label for="deathDate">Death Date:</label>
+            <input type="date" id="deathDate" name="deathDate" th:value="${person.deathDate}"><br>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="MALE"   th:selected="${person.gender} == 'male'">Male</option>
+                <option value="FEMALE" th:selected="${person.gender} == 'male'">Female</option>
+                <option value="OTHER"  th:selected="${person.gender} == 'male'">Other</option>
+            </select><br>
+            <label for="portrait">Portrait:</label>
+            <input type="file" id="portrait" name="file" accept="image/*" required>
+            <button type="button" onclick="editPerson()">Submit</button>
+        </form>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
