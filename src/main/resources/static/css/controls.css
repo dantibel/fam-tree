@@ -1,0 +1,83 @@
+/* styles for control elements */
+
+form {
+    margin: 10px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+    justify-content: center;
+}
+
+select, input, button {
+    border: none;
+    width: max-content;
+    cursor: pointer;
+}
+
+label, select {
+    margin: 5px;
+    font-weight: bold;
+}
+
+select, input {
+    background-color: #8b7e66;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+    margin: 10px;
+}
+
+label {
+    margin-right: 15px;
+    text-align: right;
+    width: 150px;
+    display: inline-block;
+    clear: both;
+}
+
+input {
+    background-color: #8b7e66;
+    color: black;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    text-align: left;
+}
+
+.context-menu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    text-align: left;
+}
+
+.context-menu button {
+    border-radius: 0px;
+    font-weight: normal;
+    width: 100%;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #6d421f;
+    color: #fdf5e6;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 8px 4px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+}
+
+button:hover {
+    background-color: #7a4b24;
+}
