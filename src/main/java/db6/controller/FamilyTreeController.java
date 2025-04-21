@@ -57,7 +57,14 @@ public class FamilyTreeController {
         return "redirect:/";
     }
 
-    @GetMapping("/person")
+    @GetMapping("/add-person")
+    public String addPerson(Model model) {
+        model.addAttribute("loggedUserId", loggedUserId);
+        model.addAttribute("persons", familyTreeService.getAllPersons());
+        return "add-person";
+    }
+
+
     public String showPersonDetails(@RequestParam Long id, Model model) {
         model.addAttribute("person", familyTreeService.getPerson(id).orElse(null));
         return "person-details";

@@ -1,16 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const addPersonBtn = document.getElementById("add-person-btn");
-    const addPersonModal = document.getElementById("add-person-modal");
-
-    addPersonBtn.addEventListener("click", function () {
-        addPersonModal.style.display = "block";
-    });
-
-    window.closeAddPersonModal = function () {
-        addPersonModal.style.display = "none";
-    };
-});
-
 function getSpouse(personId) {
     const relationsUrl = `${apiPath}/relations`;
 
@@ -96,7 +83,7 @@ function addRelation(person1, person2, relationType) {
 
 // Add new person to the family tree
 function addPerson() {
-    const form = document.getElementById('add-person-form');
+    const form = document.getElementById('addPersonForm');
     const formData = new FormData(form);
 
     const personData = {
@@ -106,7 +93,6 @@ function addPerson() {
         birthDate: formData.get('birthDate'),
         deathDate: formData.get('deathDate'),
         gender: formData.get('gender'),
-        description: formData.get('description'),
         portraitUrl: formData.get('portraitUrl'),
         userId: getLoggedUserId(),
     };
@@ -148,9 +134,8 @@ function addPerson() {
             }
             form.reset();
 
-            // Reload the page to see newly added person
-            window.closeAddPersonModal();
-            window.location.reload();
+            // Reload the page to see the new person
+            window.location.href = '/fam-tree';
         })
         .catch(error => {
             console.error('ERROR:', error);

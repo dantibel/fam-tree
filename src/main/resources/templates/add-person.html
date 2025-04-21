@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_user_id" th:content="${loggedUserId}">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>Add New Family Member</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <a href="/fam-tree" class="back-button">Back to Family Tree</a>
+    </header>
+    <div>
+        <h2>Add Person</h2>
+        <form id="addPersonForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" required><br>
+            <label for="middleName">Middle Name:</label>
+            <input type="text" id="middleName" name="middleName"><br>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastName" required><br>
+            <label for="birthDate">Birth Date:</label>
+            <input type="date" id="birthDate" name="birthDate"><br>
+            <label for="deathDate">Death Date:</label>
+            <input type="date" id="deathDate" name="deathDate"><br>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+            </select><br>
+            <label for="relationType">Relation:</label>
+            <span>A </span>
+            <select id="relationType" name="relationType" required>
+                <option value="PARENT">parent</option>
+                <option value="CHILD">child</option>
+                <option value="SPOUSE">spouse</option>
+            </select>
+            <span> of </span>
+            <select id="relative" name="relative" required>
+                <option th:each="person: ${persons}" th:value="${person.id}" th:text="${person.firstName} + ' ' + ${person.lastName}"></option>
+            </select><br>
+            <label for="portrait">Upload Portrait:</label>
+            <input type="file" id="portrait" name="file" accept="image/*" required>
+            <button type="button" onclick="addPerson()">Submit</button>
+        </form>
+    </div>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>

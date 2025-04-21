@@ -13,7 +13,7 @@
     <div class="container">
         <h1>Family Tree</h1>
         <div style="align-items: center;">
-            <button id="add-person-btn" type="button">Add Family Member</button>
+            <button id="add-person-btn" type="button" onclick="window.location.href = '/add-person';">Add New Family Member</button>
             <br><br>
             <form id="root-person-form">
                 <label for="id">Root Person:</label>
@@ -26,48 +26,6 @@
             </form>
         </div>
         <div id="family-tree" th:utext="${familyTreeHtml}"></div>
-    </div>
-
-    <!-- Add Person Form Modal -->
-    <div id="add-person-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeAddPersonModal()">&times;</span>
-            <h2>Add Person</h2>
-            <form id="add-person-form">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required><br>
-                <label for="middleName">Middle Name:</label>
-                <input type="text" id="middleName" name="middleName"><br>
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required><br>
-                <label for="birthDate">Birth Date:</label>
-                <input type="date" id="birthDate" name="birthDate"><br>
-                <label for="deathDate">Death Date:</label>
-                <input type="date" id="deathDate" name="deathDate"><br>
-                <label for="gender">Gender:</label>
-                <select id="gender" name="gender" required>
-                    <option value="MALE">Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="OTHER">Other</option>
-                </select><br>
-                <label for="relationType">Relation:</label>
-                <span>A </span>
-                <select id="relationType" name="relationType" required>
-                    <option value="PARENT">parent</option>
-                    <option value="CHILD">child</option>
-                    <option value="SPOUSE">spouse</option>
-                </select>
-                <span> of </span>
-                <select id="relative" name="relative" required>
-                    <option th:each="person: ${persons}" th:value="${person.id}" th:text="${person.firstName} + ' ' + ${person.lastName}"></option>
-                </select><br>
-                <label for="description">Description:</label>
-                <textarea id="description" name="description"></textarea><br>
-                <label for="portraitUrl">Portrait URL:</label>
-                <input type="url" id="portraitUrl" name="portraitUrl"><br>
-                <button type="button" onclick="addPerson()">Submit</button>
-            </form>
-        </div>
     </div>
 
     <script src="js/scripts.js"></script>
