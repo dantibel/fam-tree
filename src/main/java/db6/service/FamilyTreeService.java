@@ -2,16 +2,19 @@ package db6.service;
 
 import db6.domain.Parents;
 import db6.domain.Person;
+import db6.domain.Photo;
 import db6.domain.Relation;
 import db6.domain.Person.Gender;
 import db6.domain.repository.PersonRepository;
 import db6.domain.repository.RelationRepository;
 import jakarta.transaction.Transactional;
-
+import db6.domain.repository.PhotoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +27,8 @@ public class FamilyTreeService {
     private PersonRepository personRepository;
     @Autowired
     private RelationRepository relationRepository;
+    @Autowired
+    private PhotoRepository photoRepository;
 
     public Optional<Person> getPerson(Long id) {
         return personRepository.findById(id);
