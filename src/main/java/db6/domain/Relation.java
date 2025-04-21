@@ -2,6 +2,7 @@ package db6.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,12 +36,12 @@ public class Relation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person1", nullable = false)
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private Person person1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person2", nullable = false)
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private Person person2;
