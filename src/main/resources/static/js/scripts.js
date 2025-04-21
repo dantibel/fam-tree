@@ -225,6 +225,8 @@ function setRootPerson() {
         });
 }
 
+const personActionMenuName = 'person-action-menu';
+
 function showContextMenu(event, personId) {
     event.preventDefault();
     const menu = document.getElementById(personActionMenuName);

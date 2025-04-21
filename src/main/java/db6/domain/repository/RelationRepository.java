@@ -16,6 +16,15 @@ public interface RelationRepository extends JpaRepository<Relation, Long> {
     List<Relation> findByPerson1(Person person1);
     List<Relation> findByPerson2(Person person2);
 
+    @Query("SELECT r FROM Relation r WHERE r.person1 = :parent AND type = 'CHILD'")
+    List<Relation> findChildrenOf(@Param("parent") Person parent);
+
+    @Query("SELECT r FROM Relation r WHERE r.person2 = :child AND type = 'CHILD'")
+    List<Relation> findParentsOf(@Param("child") Person child);
+
+    @Query("SELECT r FROM Relation r WHERE (r.person1 = :spouse OR r.person2 = :spouse) AND type = 'SPOUSE'")
+    List<Relation> findSpouseOf(@Param("spouse") Person spouse);
+
     @Modifying
     @Query("DELETE FROM Relation r WHERE r.person1 = :person OR r.person2 = :person")
     void deleteByPerson(@Param("person") Person person);

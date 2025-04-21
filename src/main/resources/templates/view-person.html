@@ -23,6 +23,36 @@
         <h1 th:text="${person.firstName} + ' ' + (${person.middleName}?: '') + ' ' + ${person.lastName}"></h1>
         <i><p th:text="(${#temporals.format(person.birthDate, 'dd.MM.yyyy')}?: '?') + ' - ' + (${#temporals.format(person.deathDate, 'dd.MM.yyyy')}?: '?')"></p></i>
         <p><span th:text="${person.gender}"></span></p>
+        <hr>
+        <div class="relatives-list">
+            <h3>Spouse</h3>
+            <ul th:if="${spouse}">
+                <li th:object="${spouse}">
+                    <a th:href="@{/view-person(id=*{id})}" th:text="*{firstName} + ' ' + (*{middleName}?: '') + ' ' + *{lastName}"></a>
+                </li>
+            </ul>
+            <h3>Parents</h3>
+            <ul th:if="${parents}">
+                <li th:if="${parents.father.orElse(null)}" th:object="${parents.father.get()}">
+                    <a th:href="@{/view-person(id=*{id})}" th:text="*{firstName} + ' ' + (*{middleName}?: '') + ' ' + *{lastName}"></a>
+                </li>
+                <li th:if="${parents.mother.orElse(null)}" th:object="${parents.mother.get()}">
+                    <a th:href="@{/view-person(id=*{id})}" th:text="*{firstName} + ' ' + (*{middleName}?: '') + ' ' + *{lastName}"></a>
+                </li>
+            </ul>
+            <h3>Siblings</h3>
+            <ul th:if="${siblings}">
+                <li th:each="sibling : ${siblings}" th:object="${sibling}">
+                    <a th:href="@{/view-person(id=*{id})}" th:text="*{firstName} + ' ' + (*{middleName}?: '') + ' ' + *{lastName}"></a>
+                </li>
+            </ul>
+            <h3>Children</h3>
+            <ul th:if="${children}">
+                <li th:each="child : ${children}" th:object="${child}">
+                    <a th:href="@{/view-person(id=*{id})}" th:text="*{firstName} + ' ' + (*{middleName}?: '') + ' ' + *{lastName}"></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </body>
 </html>

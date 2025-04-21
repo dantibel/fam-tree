@@ -60,6 +60,7 @@ public class FamilyTreeController {
     @GetMapping("/add-person")
     public String addPerson(Model model, Principal principal) {
         model.addAttribute("loggedUserId", loggedUserId);
+        model.addAttribute("loggedUsername", principal.getName());
         model.addAttribute("persons", familyTreeService.getAllPersons());
         return "add-person";
     }
@@ -68,6 +69,10 @@ public class FamilyTreeController {
     public String showPersonDetails(@RequestParam Long id, Model model, Principal principal) {
         model.addAttribute("loggedUsername", principal.getName());
         model.addAttribute("person", familyTreeService.getPerson(id).orElse(null));
+        model.addAttribute("spouse", familyTreeService.getSpouse(id).orElse(null));
+        model.addAttribute("parents", familyTreeService.getParents(id));
+        model.addAttribute("siblings", familyTreeService.getSiblings(id));
+        model.addAttribute("children", familyTreeService.getChildren(id));
         return "view-person";
     }
 

@@ -41,9 +41,23 @@ public class FamilyTreeService {
         }
 
         // Get the parent's children
-        return relationRepository.findByPerson1(parent).stream()
-            .filter(relation -> relation.getType().equals(Relation.Type.CHILD))
+        return relationRepository.findChildrenOf(parent).stream()
             .map(relation -> personRepository.findById(relation.getPerson2().getId()).orElse(null))
+            .collect(Collectors.toList());
+    }
+
+    public List<Person> getSiblings(Long personId) {
+        // Get person
+        Person person = personRepository.findById(personId).orElse(null);
+        if (person == null) {
+            return List.of();
+        }
+
+        return relationRepository.findParentsOf(person).stream() // get person's parents relations
+            .map(relation -> relationRepository.findChildrenOf(relation.getPerson1())) // get parent's children relations
+            .flatMap(List::stream) // flatten into a single stream
+            .map(relation -> personRepository.findById(relation.getPerson2().getId()).orElse(null)) // get chidren ids
+            .filter(sibling -> !sibling.getId().equals(personId)) // exclude the person itself
             .collect(Collectors.toList());
     }
 
@@ -55,8 +69,7 @@ public class FamilyTreeService {
         }
 
         // Get all the child's parents
-        List<Person> parents = relationRepository.findByPerson2(child).stream()
-            .filter(relation -> relation.getType().equals(Relation.Type.CHILD))
+        List<Person> parents = relationRepository.findParentsOf(child).stream()
             .map(relation -> personRepository.findById(relation.getPerson1().getId()).orElse(null))
             .collect(Collectors.toList());
 
@@ -75,6 +88,27 @@ public class FamilyTreeService {
             father = parents.size() > 1 ? parents.get(1) : null;
         }
         return new Parents(father, mother);
+    }
+
+    public Optional<Person> getSpouse(Long personId) {
+        // Get the person
+        Person person = personRepository.findById(personId).orElse(null);
+        if (person == null) {
+            return null;
+        }
+
+        // Get the spouse relation
+        List<Relation> relations = relationRepository.findSpouseOf(person);
+        if (relations.isEmpty()) {
+            return Optional.empty();
+        }
+
+        // Take first marriage relation
+        Relation relation = relations.get(0);
+
+        // Get the spouse
+        Person spouse = relation.getPerson1().equals(person) ? relation.getPerson2() : relation.getPerson1();
+        return Optional.of(spouse);
     }
 
     // Delete a person that may have parents or childern but not both
