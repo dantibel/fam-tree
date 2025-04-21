@@ -20,7 +20,7 @@
         </div>
     </header>
     <div class="content">
-        <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
+        <img th:src="${person.gender?.name()} == 'FEMALE' ? '/images/portrait-female.jpg' : '/images/portrait-male.webp'" alt="Portrait" class="portrait" />
         <h1 th:text="${person.firstName} + ' ' + (${person.middleName}?: '') + ' ' + ${person.lastName}"></h1>
         <i><p th:text="(${#temporals.format(person.birthDate, 'dd.MM.yyyy')}?: '?') + ' - ' + (${#temporals.format(person.deathDate, 'dd.MM.yyyy')}?: '?')"></p></i>
         <p><span th:text="${person.gender}"></span></p>

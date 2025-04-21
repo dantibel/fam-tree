@@ -25,7 +25,7 @@
     </header>
 
     <div class="content">
-        <img src="/images/portrait-male.webp" alt="Portrait" class="portrait" />
+        <img th:src="${person.gender?.name()} == 'FEMALE' ? '/images/portrait-female.jpg' : '/images/portrait-male.webp'" alt="Portrait" class="portrait" />
         <form id="editPersonForm">
             <div class="form-grid">
                 <input type="number" id="id" name="id" required hidden th:value="${person.id}">
