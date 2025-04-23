@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import java.time.LocalDate;
 
 @Entity
@@ -13,9 +14,6 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
-    private String imageUrl;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -23,11 +21,20 @@ public class Photo {
 
     private Long userId;
 
+    @Lob
+    @Column(nullable = false)
+    private byte[] data;
+
+    @Column(nullable = false)
+    private String fileName;
+
+    @Column(nullable = false)
+    private String contentType;
+
     public Photo() {
     }
 
-    public Photo(String imageUrl, String description, LocalDate date, Long userId) {
-        this.imageUrl = imageUrl;
+    public Photo(String description, LocalDate date, Long userId) {
         this.description = description;
         this.date = date;
         this.userId = userId;
@@ -39,14 +46,6 @@ public class Photo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {
@@ -71,5 +70,29 @@ public class Photo {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

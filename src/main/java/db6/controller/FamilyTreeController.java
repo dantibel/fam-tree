@@ -6,10 +6,15 @@ import db6.domain.Person.Gender;
 import db6.service.AppUserService;
 import db6.service.FamilyTreeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -39,7 +44,7 @@ public class FamilyTreeController {
         }
 
         // Root person is the logged user's person by default
-        if (rootPersonId == null) {
+        if (rootPersonId == null || familyTreeService.getPerson(rootPersonId).isEmpty()) {
             rootPersonId = loggedUserId;
         }
         Person rootPerson = familyTreeService.getPerson(rootPersonId).orElse(null);
@@ -83,10 +88,20 @@ public class FamilyTreeController {
         return "edit-person";
     }
 
+    @PostMapping("/upload-portrait/{personId}")
+    public ResponseEntity<String> uploadPortrait(@PathVariable Long personId, @RequestParam("file") MultipartFile file) {
+        try {
+            //familyTreeService.savePortrait(personId, file);
+            return ResponseEntity.ok("Portrait uploaded successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload portrait: " + e.getMessage());
+        }
+    }
+
     private static String getPortraitUrl(Person person) {
-        return person.getPortraitUrl() != null && !person.getPortraitUrl().isEmpty()
-            ? person.getPortraitUrl()
-            : person.getGender() == Gender.MALE
+        return //person.getPortrait() != null && !person.getPortrait().get
+            //? person.getPortraitUrl()
+            person.getGender() == Gender.MALE
                 ?  "/images/portrait-male.webp"
                 : "/images/portrait-female.jpg";
     }

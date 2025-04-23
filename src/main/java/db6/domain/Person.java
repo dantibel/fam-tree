@@ -2,6 +2,7 @@ package db6.domain;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,6 +10,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 
 // Personal information
 @Entity
@@ -46,8 +49,9 @@ public class Person {
     @Column(nullable = false)
     private Gender gender;
 
-    @Column(name = "portrait_url", length = 255)
-    private String portraitUrl;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "portrait")
+    private Photo portrait;
 
     private LocalDate birthDate;
 
@@ -58,12 +62,12 @@ public class Person {
     public Person() {
     }
 
-    public Person(String firstName, String middleName, String lastName, Gender gender, String portraitUrl, LocalDate birthDate, LocalDate deathDate, Long userId) {
+    public Person(String firstName, String middleName, String lastName, Gender gender, Photo portrait, LocalDate birthDate, LocalDate deathDate, Long userId) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.gender = gender;
-        this.portraitUrl = portraitUrl;
+        this.portrait = portrait;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
         this.userId = userId;
@@ -109,12 +113,12 @@ public class Person {
         this.gender = gender;
     }
 
-    public String getPortraitUrl() {
-        return portraitUrl;
+    public Photo getPortrait() {
+        return portrait;
     }
 
-    public void setPortraitUrl(String portraitUrl) {
-        this.portraitUrl = portraitUrl;
+    public void setPortrait(Photo portrait) {
+        this.portrait = portrait;
     }
 
     public LocalDate getBirthDate() {

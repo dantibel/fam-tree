@@ -16,9 +16,10 @@ CREATE TABLE person (
     middle_name VARCHAR(50),
     last_name VARCHAR(50) NOT NULL,
     gender CHAR(6) NOT NULL, -- TODO: use enum type
-    portrait_url VARCHAR(255),
+    portrait INT,
     birth_date DATE,
     death_date DATE,
+    FOREIGN KEY (portrait) REFERENCES photo(id),
 
     user_id INT,
     FOREIGN KEY (user_id) REFERENCES app_user(id)

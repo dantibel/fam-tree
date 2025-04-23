@@ -1,4 +1,5 @@
-function getSpouse(personId) {
+// TODO: fix
+function getSpouseRef(personId) {
     const relationsUrl = `${apiPath}/relations`;
 
     return fetch(relationsUrl)
@@ -15,14 +16,12 @@ function getSpouse(personId) {
                 relation.relationType === 'SPOUSE'
             );
 
-            if (spouseRelation) {
-                return spouseRelation.person1 === `/api/persons/${personId}` 
-                    ? spouseRelation.person2.replace('/api/persons/', '') 
-                    : spouseRelation.person1.replace('/api/persons/', '');
-            } else {
+            if (!spouseRelation) {
                 console.log('No spouse found for the given person.');
                 return null;
             }
+
+            return spouseRelation.person1 === `/api/persons/${personId}` ? spouseRelation.person2 : spouseRelation.person1;
         })
         .catch(error => {
             console.error('ERROR:', error);
@@ -81,6 +80,30 @@ function addRelation(person1, person2, relationType) {
         });
 }
 
+// Upload portrait for a person
+function uploadPortrait(personId) {
+    const formData = new FormData();
+    const fileInput = document.getElementById('portrait');
+    formData.append('file', fileInput.files[0]);
+
+    const uploadPortraitUrl = '/upload-portrait/' + personId;
+    const response = fetch(uploadPortraitUrl, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (!response.ok) {
+            console.error(`ERROR: request to ${uploadPortraitUrl} returned ${response.status}`);
+            throw new Error('Cannot create relation');
+        }
+
+        console.log('Portrait uploaded successfully.');
+        location.reload();
+    })
+    .catch(error => {
+        console.error('ERROR:', error);
+    });
+};
+
 // Add new person to the family tree
 function addPerson() {
     const form = document.getElementById('addPersonForm');
@@ -127,12 +150,22 @@ function addPerson() {
             // Add new relation for the new person
             if (relationType === 'CHILD') {
                 addRelation(relativeRef, selfRef, relationType);
+                getSpouseRef(relativeId).then(
+                    function (spouseRef) {
+                        if (spouseRef) {
+                            addRelation(spouseRef, selfRef, 'SPOUSE');
+                            // Reload the page to see the new person
+                            window.location.href = '/fam-tree';
+                        }
+                    }
+                );
             } else if (relationType === 'PARENT') {
                 addRelation(selfRef, relativeRef, 'CHILD');
             } else if (relationType === 'SPOUSE') {
                 addRelation(relativeRef, selfRef, relationType);
             }
-            form.reset();
+
+            //uploadPortrait(data.id);
 
             // Reload the page to see the new person
             window.location.href = '/fam-tree';
@@ -274,6 +307,29 @@ function deletePersonWithMenu() {
 
             // Reload the page to reflect the changes
             window.location.reload();
+        })
+        .catch(error => {
+            console.error('ERROR:', error);
+        });
+}
+
+function logout() {
+    const csrf = getCSRF();
+    const logoutUrl = '/logout';
+    fetch(logoutUrl, {
+        method: 'POST',
+        headers: {
+            [csrf.csrfHeader]: csrf.csrfToken
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                console.error(`ERROR: request to ${logoutUrl} returned ${response.status}`);
+                throw new Error('Cannot logout');
+            }
+
+            // Redirect to the login page
+            window.location.href = '/login';
         })
         .catch(error => {
             console.error('ERROR:', error);
